@@ -1,3 +1,27 @@
+<h1>hasil Screenshot</h1>
+
+<h2>instalasi breeze</h2>
+
+![image](https://github.com/user-attachments/assets/3b7533f3-da4f-4b4f-ad3a-3db74e62fe21)
+
+![image](https://github.com/user-attachments/assets/453acace-1c1c-49f8-a1c4-ac944d359abb)
+
+<h2>web.php</h2>
+
+![image](https://github.com/user-attachments/assets/f091285e-3045-43c2-b6a5-037d799b01db)
+
+<h2>dashboard</h2>
+
+![image](https://github.com/user-attachments/assets/d0224f70-9df5-4dc6-a3ad-0639b684c051)
+
+![image](https://github.com/user-attachments/assets/20a5f81c-734b-4368-b6ab-1b8a7fd3520f)
+
+<h2>database</h2>
+
+![image](https://github.com/user-attachments/assets/67f1ba2e-f442-47a9-bb07-2369582da2f1)
+
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
