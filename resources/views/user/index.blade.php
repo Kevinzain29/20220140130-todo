@@ -94,8 +94,31 @@
                     </p>
                 </td>
                 <td class="px-6 py-4">
+                    <div class="flex items-center space-x-6">
+                        @if ($data->is_admin)
+                            <form action="{{ route('user.removeadmin', $data) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <button class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-medium">Remove Admin</button>
+                            </form>
+                        @else
+                            <form action="{{ route('user.makeadmin', $data) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <button class="text-red-600 dark:text-red-400 hover:underline text-sm font-medium">Make Admin</button>
+                            </form>
+                        @endif
+                        <!-- delete button -->
+                        <form action="{{ route('user.destroy', $data) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-600 dark:text-red-400 hover:underline text-sm font-medium">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
                 </td>
-                </tr>
+            </tr>
             @empty
                 <tr class="odd:bg-white odd:dark:bg-gray-800 even:bg-gray-50 even:dark:bg-gray-700">
                 <td colspan="5" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
