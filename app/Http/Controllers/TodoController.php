@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Todo;
+use App\Models\Category;
 
 class TodoController extends Controller
 {
     public function index()
     {
-        $todos = Todo::where('user_id', Auth::id())
+        $todos = Todo::with('category')
+        ->where('user_id', Auth::id())
         // ->orderBy('is_done', 'asc')
         ->orderBy('created_at', 'desc')
         ->get();
@@ -23,17 +25,20 @@ class TodoController extends Controller
 
     public function create()
     {
-        return view('todo.create');
+        $categories = Category::orderBy('title')->get();
+        return view('todo.create', compact('categories'));
     }
-    public function store(Request $request)
+    public function store(Request $request, Todo $todo)
      {
          $request->validate([
              'title' => 'required|string|max:255',
+             'category_id' => 'nullable|exists:categories,id',
          ]);
  
          $todo = todo::create([
              'title' => ucfirst($request->title),
              'user_id' => Auth::id(),
+             'category_id' => $request->category_id,
          ]);
          return redirect()->route('todo.index')->with('success', 'todo created successfully.');
      }
@@ -62,7 +67,8 @@ class TodoController extends Controller
      }
     public function edit(Todo $todo) {
         if (auth()->user()->id == $todo->user_id){
-            return view('todo.edit', compact('todo'));
+            $categories = Category::orderBy('title')->get();
+            return view('todo.edit', compact('todo', 'categories'));
         }else{
             return redirect()->route('todo.index')->with('danger', 'You are not authorized to edit this todo!');
         }
@@ -71,9 +77,11 @@ class TodoController extends Controller
     public function update(Request $request, Todo $todo){
         $request->validate([
             'title' => 'required|max:255',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
         $todo->update([
             'title' => ucfirst($request->title),
+            'category_id' => $request->category_id,
         ]);
         return redirect()->route('todo.index')->with('success', 'Todo updated successfully!');
     }

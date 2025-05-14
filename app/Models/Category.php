@@ -4,24 +4,26 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Todo extends Model
+class Category extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'title',
         'user_id',
-        'category_id',
-        'is_done',
-        'is_complete',
     ];
-    public function user()
+
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-    public function category()
+
+    public function todos(): HasMany
     {
-        return $this->belongsTo(Category::class);
+        return $this->hasMany(Todo::class);
     }
 }
+
