@@ -3,11 +3,14 @@
 namespace App\Providers;
 
 use Dedoc\Scramble\Scramble;
+use Dedoc\Scramble\Support\Generator\OpenApi;
+use Dedoc\Scramble\Support\Generator\SecurityScheme;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\PersonalAccessToken;
 use Laravel\Sanctum\Sanctum;
 
@@ -27,14 +30,23 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (app()->environment('local')) {
+        Model::preventLazyLoading();
+        }
+
         Paginator::useTailwind();
+        
         Gate::define('admin', function ($user) {
             return $user->is_admin == true;
         });
-        Scramble::configure()->routes(function (Route $route) {
-            return Str::startsWith($route->uri, 'api/');
-        });
-        
+        Scramble::configure()
+            ->routes(function (Route $route) {
+                return Str::startsWith($route->uri, 'api/');
+            })->withDocumentTransformers(function(OpenApi $openApi) {
+                $openApi->secure(
+                    SecurityScheme::http('bearer')
+                );
+            });
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
     }
-}
+}   
